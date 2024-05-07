@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/6bd9574680.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="bg-[#0B101B] text-white">
+    <div id="first-page">
+        <div id="nav" class="border-b border-gray-100/20 flex flex-row py-3 px-5 justify-between items-center">
+            <p class="font-bold text-3xl text-gradient-to-r from-red-500 to-yellow-500">SnipIt</p>
+            <div class="flex gap-2 text-sm">
+                <a class="text-white border rounded-full px-6 py-2 bg-[#181E29]">Login</a>
+                <a class="border rounded-full px-6 py-2 hidden sm:block bg-[#144EE3]">Register Now</a>
+            </div>
+        </div>
+
+        <div id="main" class="mx-5 text-center">
+            <p class="my-8 text-4xl font-bold">Shorten your Loooong Links</p>
+            <p>SnipIt is an efficient and easy-to-use URL shortening service that streamlines your online experience.
+            </p>
+
+            <!--Alternative input field
+            <form>
+                <label>
+                    <div class="mt-20 flex gap-4 justify-center">
+                        <input placeholder="Enter link here" class="border-[#353C4A] bg-transparent border-2 px-6 rounded-lg py-3 w-[70%] focus:border-4 focus:outline-none">
+                        <button class="bg-blue-400 px-4 py-3 rounded-md hover:bg-blue-500 sm:hidden">Go</button>
+                        <button class="bg-blue-400 px-4 py-3 rounded-md hover:bg-blue-500 hidden sm:flex">Shorten Now!</button>
+                    </div>
+                </label>
+            </form-->
+
+            <div
+                class="bg-[#353C4A] m-auto mt-10 mb-3 py-2 rounded-full flex flex-row border-2 gap-4 border-gray-200 justify-between items-center sm:w-[60%]">
+                <i class="fa-solid fa-link ml-5"></i>
+                <form action="/" method="post" class="flex flex-row justify-center w-[90%] items-center">
+                    <input type="url" placeholder="Enter the link here" class="w-full bg-transparent focus:outline-none"
+                        required>
+                    <button type="submit"
+                        class="flex items-center justify-center bg-blue-400 w-12 h-9 rounded-full mr-2 sm:flex-shrink-0 sm:px-3 sm:w-fit">
+                        <i class="fa-solid fa-arrow-right sm:hidden"></i>
+                        <span class="hidden sm:flex">Shorten Now!<span>
+                    </button>
+                </form>
+            </div>
+            <div id="shortened-link">
+                {% if success_message %}
+                    <p>{{ success_message }}</p>
+                {% endif %}
+                </div>
+        
+            <p>You can create 05 more links. Register Now to have Unlimited usage</p>
+        </div>
+
+        <div class="w-[85%] p-5 m-auto mt-8">
+            <table class="w-full text-center rounded-t-lg">
+                <thead class="bg-[#353C4A]">
+                    <tr>
+                        <th class="px-6 py-3 hidden sm:block sm:table-cell">ID</th>
+                        <th class="px-6 py-3 w-3/4">Long link</th>
+                        <th class="px-6 py-3 w-3/4">Short link</th>
+                        <th class="px-6 py-3 w-3/4 hidden sm:block sm:table-cell">Date Created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for link in links %}
+                    <tr class="border-b border-gray-100/20">
+                        <td class="py-2 whitespace-nowrap hidden sm:block sm:table-cell">{{ link.id }}</td>
+                        <td class="py-2 whitespace-nowrap">{{ link.long_link }}</td>
+                        <td class="py-2 whitespace-nowrap">{{ link.short_link }}</td>
+                        <td class="py-2 whitespace-nowrap hidden sm:block sm:table-cell">{{ link.date_created }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
