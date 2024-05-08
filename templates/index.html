@@ -7,6 +7,7 @@
     <title>Document</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/6bd9574680.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body class="bg-[#0B101B] text-white">
@@ -39,8 +40,8 @@
                 class="bg-[#353C4A] m-auto mt-10 mb-3 py-2 rounded-full flex flex-row border-2 gap-4 border-gray-200 justify-between items-center sm:w-[60%]">
                 <i class="fa-solid fa-link ml-5"></i>
                 <form action="/" method="post" class="flex flex-row justify-center w-[90%] items-center">
-                    <input type="url" placeholder="Enter the link here" class="w-full bg-transparent focus:outline-none"
-                        required>
+                    <input type="url" name="url" placeholder="Enter the link here"
+                        class="w-full bg-transparent focus:outline-none" required>
                     <button type="submit"
                         class="flex items-center justify-center bg-blue-400 w-12 h-9 rounded-full mr-2 sm:flex-shrink-0 sm:px-3 sm:w-fit">
                         <i class="fa-solid fa-arrow-right sm:hidden"></i>
@@ -50,10 +51,10 @@
             </div>
             <div id="shortened-link">
                 {% if success_message %}
-                    <p>{{ success_message }}</p>
+                <p>{{ success_message }}</p>
                 {% endif %}
-                </div>
-        
+            </div>
+
             <p>You can create 05 more links. Register Now to have Unlimited usage</p>
         </div>
 
@@ -65,21 +66,75 @@
                         <th class="px-6 py-3 w-3/4">Long link</th>
                         <th class="px-6 py-3 w-3/4">Short link</th>
                         <th class="px-6 py-3 w-3/4 hidden sm:block sm:table-cell">Date Created</th>
+                        <th class="px-6 py-3">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for link in links %}
-                    <tr class="border-b border-gray-100/20">
+                    <tr class="border-b border-gray-100/20" data-link-id="{{ link.id }}">
                         <td class="py-2 whitespace-nowrap hidden sm:block sm:table-cell">{{ link.id }}</td>
                         <td class="py-2 whitespace-nowrap">{{ link.long_link }}</td>
                         <td class="py-2 whitespace-nowrap">{{ link.short_link }}</td>
                         <td class="py-2 whitespace-nowrap hidden sm:block sm:table-cell">{{ link.date_created }}</td>
+                        <td>
+                            <form action="{{ url_for('delete_link', link_id=link.id) }}" method="post">
+                                <button type="button" class="text-red-500 hover:text-red-700"
+                                    onclick="deleteLink({{ link.id }})">DELETE
+                                    <!--i class="fa-solid fa-trash"></i-->
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
+    <script>
+        /*function deleteLink(linkId) {
+            if (confirm("Are you sure you want to delete this link?")) {
+                $.ajax({
+                    url: "/delete_link/" + linkId,
+                    type: "POST",
+                    success: function (response) {
+                        // Remove the table row for the deleted link (assuming a unique identifier class)
+                        $(`tr[data-link-id="${linkId}"]`).remove();
+                        renumberRows();  // Renumber remaining rows (optional)
+                        // Optionally display a success message here (e.g., using an alert box)
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Error deleting link: " + error); // Informative error message
+                    }
+                });
+            }
+        }*/
+        function deleteLink(linkId) {
+            if (confirm("Are you sure you want to delete this link?")) {
+                $.ajax({
+                    url: "/delete_link/" + linkId,
+                    type: "POST",
+                    success: function (response) {
+                        // Select the row to remove using the data-link-id attribute
+                        $(`tr[data-link-id="${linkId}"]`).remove();
+                        renumberRows();  // Renumber remaining rows (optional)
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Error deleting link: " + error);
+                    }
+                });
+            }
+        }
+        function renumberRows() {
+            var rows = $("table tbody tr");
+            rows.each(function (index) {
+                $(this).find("td:first").text(index + 1);
+            });
+        }
+
+        $(document).ready(function () {
+            renumberRows();
+        });
+    </script>
 </body>
 
 </html>

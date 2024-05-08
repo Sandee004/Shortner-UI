@@ -1,7 +1,7 @@
 from datetime import datetime
 import random
 import string
-from flask import Flask, render_template, request, redirect, flash, url_for
+from flask import Flask, render_template, request, redirect, flash, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 
@@ -46,16 +46,34 @@ def index():
         context = {
             "success_message": success_message,
         }
-        return render_template("index.html", **context)
+        links = Shortener.query.all()
+        return render_template("index.html", **context, links=links)
 
     return render_template("index.html")
     
 
+@app.route('/delete_link/<int:link_id>', methods=['POST', 'GET'])
+def delete_link(link_id):
+    if request.method == 'GET':
+        # Confirmation logic can be added here (optional)
+        pass
+    else:
+        link = Shortener.query.get(link_id)
+        if link:
+            db.session.delete(link)
+            db.session.commit()
+            #flash("Link deleted successfully!")
+            #return redirect(url_for('index'))
+            return jsonify({'message': 'Link deleted successfully!'})
+        else:
+            return jsonify({'message': 'Link not found'})
+        
+"""
 @app.route('/database')
 def database():
     links = Shortener.query.all()
     return render_template("database.html", links=links)
-
+"""
 
 @app.route('/<short_code>')
 def redirect_to_long_link(short_code):
