@@ -32,23 +32,26 @@ with app.app_context():
 def index():
     if request.method == "POST":
         long_link = request.form.get("url")
-        short_link = ''.join(random.choices(string.ascii_letters + string.digits, k=5))
+        existing_link = Shortener.query.filter_by(long_link=long_link).first()
+        if existing_link:
+            # Link already exists, return the existing short link
+            short_link = existing_link.short_link
+            success_message = f"Long link already shortened! Your short link is: http://localhost:80/{short_link}"
+        else:
+            short_link = ''.join(random.choices(string.ascii_letters + string.digits, k=5))
 
-        new_link = Shortener(long_link=long_link, short_link=short_link)
-        db.session.add(new_link)
-        db.session.commit()
+            new_link = Shortener(long_link=long_link, short_link=short_link)
+            db.session.add(new_link)
+            db.session.commit()
 
-        generated_short_link = new_link.short_link
-
-        success_message = f"Long link successfully shortened! Your short link is: http://localhost:80/{generated_short_link}"
-
-        # Pass shortened link and message to the template
+            generated_short_link = new_link.short_link
+            success_message = f"Long link successfully shortened! Your short link is: http://localhost:80/{generated_short_link}"
         context = {
             "success_message": success_message,
         }
         links = Shortener.query.all()
         return render_template("index.html", **context, links=links)
-
+    
     return render_template("index.html")
     
 
@@ -62,18 +65,10 @@ def delete_link(link_id):
         if link:
             db.session.delete(link)
             db.session.commit()
-            #flash("Link deleted successfully!")
-            #return redirect(url_for('index'))
             return jsonify({'message': 'Link deleted successfully!'})
         else:
             return jsonify({'message': 'Link not found'})
         
-"""
-@app.route('/database')
-def database():
-    links = Shortener.query.all()
-    return render_template("database.html", links=links)
-"""
 
 @app.route('/<short_code>')
 def redirect_to_long_link(short_code):
