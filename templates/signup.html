@@ -4,14 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SignUp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/6bd9574680.js" crossorigin="anonymous"></script>
 </head>
-<body class="bg-[#0B101B] text-white">
-    <form method="POST">
-        <input class="w-full bg-transparent focus:outline-none" type="text" name="fullname" placeholder="Fullname" required><br>
-        <input class="w-full bg-transparent focus:outline-none" type="text" name="username" placeholder="Username" required><br>
-        <input class="w-full bg-transparent focus:outline-none" type="password" name="password" placeholder="Password" required><br>
-        <input type="submit" name="submit" id="button" value="Submit">
-    </form>
-    <p>Already have an account? <a href="{{url_for('login')}}">Log in</a></p>
+<body class="bg-[#0B101B] text-center mt-[20%] flex justify-center items-center rounded">
+    <div class="bg-[#181E29] w-[85%]">
+        <h1 class="text-2xl mt-16 mb-10 text-[#EB568E] font-bold">Sign Up</h1>
+        <div class="text-center flex flex-col text-white">
+            <form method="POST">
+                <input class="w-[90%] pl-16 py-2 mb-3 focus:outline-none bg-transparent border-2 border-[#C9CED6]" type="text"
+                    name="username" placeholder="Username" required>
+
+                <input class="w-[90%] pl-16 py-2 mb-8 bg-transparent border-2 focus:outline-none border-[C9CED6]" type="password"
+                    name="password" placeholder="Password" required>
+
+                <input type="submit" id="button" name="submit" value="Submit"
+                    class=" w-[90%] py-2 hover:cursor-pointer hover:bg-[#EB568E]">
+            </form>
+        </div>
+        <p class="pb-20 mt-4 text-white ">Don't have an account? <a class="text-[#EB568E]" href="{{url_for('signup')}}">Sign Up</a></p>
 </body>
 </html>
