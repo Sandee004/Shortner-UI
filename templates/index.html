@@ -13,14 +13,14 @@
 <body class="bg-[#0B101B] text-white">
     <div id="first-page">
         <div id="nav" class="border-b border-gray-100/20 flex flex-row py-3 px-5 justify-between items-center">
-            <p class="font-bold text-3xl text-gradient-to-r from-red-500 to-yellow-500">SnipIt</p>
+            <p class="font-bold text-3xl text-[#EB568E]">SnipIt</p>
             <div class="flex gap-2 text-sm">
-                <a class="text-white border rounded-full px-6 py-2 bg-[#181E29]">Login</a>
-                <a class="border rounded-full px-6 py-2 hidden sm:block bg-[#144EE3]">Register Now</a>
+                <a href="{{url_for('login')}}" class="text-white border rounded-full px-6 py-2 bg-[#181E29]">Login</a>
+                <a href="{{url_for('signup')}}" class="border rounded-full px-6 py-2 hidden sm:block bg-[#144EE3]">Register Now</a>
             </div>
         </div>
 
-        <div id="main" class="mx-5 bg-[#] text-center">
+        <div id="main" class="mx-5 text-center">
             <p class="my-8 text-4xl font-bold">Shorten your Loooong Links</p>
             <p>SnipIt is an efficient and easy-to-use URL shortening service that streamlines your online experience.
             </p>
@@ -60,7 +60,29 @@
             {% endif %}
         </div>
 
-        <div class="w-[85%] p-5 m-auto mt-8">
+        <div class="w-[85%] p-5 m-auto mt-8 sm:hidden">
+            <p class="bg-[#353C4A] py-3 rounded-t-lg font-bold px-5 text-xl">Shortened Links</p>
+            <p class="text-center italic py-2">{{ prompt }}</p>
+            {% for link in links %}
+            <div class="bg-[#181E29] mb-2 flex flex-row justify-between items-center px-5 py-2">
+                <div class="flex flex-col">
+                <p class="whitespace-wrap text-xl">{{ link.long_link }}</p>
+                <p class="text-sm text-red-500">
+                    <a href="http://localhost:80/{{ link.short_link }}" target="_blank">{{ link.short_link }}</a>
+                </p>
+                </div>
+                <div>
+                    <button type="button" class="text-red-500 hover:text-red-700"
+                    onclick="deleteLink({{ link.id }})">
+                    <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+
+        <div class="hidden sm:block w-[85%] p-5 m-auto mt-8">
             <table class="w-full text-center rounded-t-lg">
                 <thead class="bg-[#353C4A]">
                     <tr>
@@ -92,6 +114,7 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <p class="text-center italic py-2">{{ prompt }}</p>
         </div>
     </div>
     <script>

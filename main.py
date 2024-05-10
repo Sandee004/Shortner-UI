@@ -42,7 +42,7 @@ def index():
             if existing_link:
             # Link already exists, return the existing short link
                 short_link = existing_link.short_link
-                success_message = f"Long link already shortened! Your short link is: http://localhost:80/{short_link}"
+                success_message = f"Long link already shortened! Your short link is: {short_link}"
             else:
                 short_link = ''.join(random.choices(string.ascii_letters + string.digits, k=5))
 
@@ -51,7 +51,7 @@ def index():
                 db.session.commit()
 
                 generated_short_link = new_link.short_link
-                success_message = f"Long link successfully shortened! Your short link is: http://localhost:80/{generated_short_link}"
+                success_message = f"Long link successfully shortened! Your short link is: {generated_short_link}"
             context = {
                 "success_message": success_message,
             }
@@ -61,15 +61,17 @@ def index():
         else:
             user_links = Shortener.query.count()
             remaining_links = max(0, 5 - (user_links + 1))
+            prompt = "Sign in to see shortened links"
             if user_links >= 5:
                 links = Shortener.query.all()
                 success_message = "Limit reached. Pls login to continue creating"
+                
             else:
                 existing_link = Shortener.query.filter_by(long_link=long_link).first()
                 if existing_link:
                  # Link already exists, return the existing short link
                     short_link = existing_link.short_link
-                    success_message = f"Long link already shortened! Your short link is: http://localhost:80/{short_link}"
+                    success_message = f"Long link already shortened! Your short link is: {short_link}"
                 else:
                     short_link = ''.join(random.choices(string.ascii_letters + string.digits, k=5))
 
@@ -78,15 +80,16 @@ def index():
                     db.session.commit()
 
                     generated_short_link = new_link.short_link
-                    success_message = f"Long link successfully shortened! Your short link is: http://localhost:80/{generated_short_link}"
+                    success_message = f"Long link successfully shortened! Your short link is: {generated_short_link}"
             context = {
                 "success_message": success_message,
                 "user_links": user_links if not user else None,
                 "remaining_links": remaining_links,
+                "prompt": prompt,
             }
-            links = Shortener.query.all()
+            #links = Shortener.query.all()
             print(user_links)
-            return render_template("index.html", **context, links=links)
+            return render_template("index.html", **context)
     return render_template("index.html")
     
 
