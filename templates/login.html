@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
 </head>
-<body>
+<body class="bg-[#0B101B] text-white">
     <form method="POST">
-        <input type="text" name="username" placeholder="Username" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
+        <input class="w-full bg-transparent focus:outline-none" type="text" name="username" placeholder="Username" required><br>
+        <input class="w-full bg-transparent focus:outline-none"type="password" name="password" placeholder="Password" required><br>
         <input type="submit" id="button" name="submit" value="Submit">
     </form>
     <p>Don't have an account? <a href="{{url_for('signup')}}">Create</a></p>

@@ -55,7 +55,9 @@
                 {% endif %}
             </div>
 
-            <p>You can create {{ user_links }} more links. Register Now to have Unlimited usage</p>
+            {% if user_links is not none %}
+            <p>You can create {{ remaining_links }} more links. Register Now to have Unlimited usage</p>
+            {% endif %}
         </div>
 
         <div class="w-[85%] p-5 m-auto mt-8">
@@ -74,8 +76,10 @@
                     <tr class="border-b border-gray-100/20" data-link-id="{{ link.id }}">
                         <td class="py-2 whitespace-nowrap hidden sm:block sm:table-cell">{{ link.id }}</td>
                         <td class="py-2 whitespace-nowrap">{{ link.long_link }}</td>
-                        <td class="py-2 whitespace-nowrap">{{ link.short_link }}</td>
-                        <td class="py-2 whitespace-nowrap hidden sm:block sm:table-cell">{{ link.date_created }}</td>
+                        <td class="py-2 whitespace-wrap">
+                            <a href="http://localhost:80/{{ link.short_link }}" target="_blank">{{ link.short_link }}</a>
+                        </td>
+                        <td class="py-2 whitespace-nowrap hidden text-red-500 sm:block sm:table-cell">{{ link.date_created }}</td>
                         <td>
                             <form action="{{ url_for('delete_link', link_id=link.id) }}" method="post">
                                 <button type="button" class="text-red-500 hover:text-red-700"

@@ -60,6 +60,7 @@ def index():
         
         else:
             user_links = Shortener.query.count()
+            remaining_links = max(0, 5 - (user_links + 1))
             if user_links >= 5:
                 links = Shortener.query.all()
                 success_message = "Limit reached. Pls login to continue creating"
@@ -80,7 +81,8 @@ def index():
                     success_message = f"Long link successfully shortened! Your short link is: http://localhost:80/{generated_short_link}"
             context = {
                 "success_message": success_message,
-                "user_links": user_links
+                "user_links": user_links if not user else None,
+                "remaining_links": remaining_links,
             }
             links = Shortener.query.all()
             print(user_links)
@@ -126,6 +128,7 @@ def login():
         print("Im in")
 
         if username == username:
+            links = Shortener.query.all()
             return redirect(url_for("index"))
             
         else:
@@ -133,8 +136,6 @@ def login():
             return redirect(url_for("login"))
     else:
         return render_template("login.html")
-
-    return render_template('login.html')
 
 
 @app.route('/delete_link/<int:link_id>', methods=['POST', 'GET'])
@@ -150,7 +151,7 @@ def delete_link(link_id):
             return jsonify({'message': 'Link deleted successfully!'})
         else:
             return jsonify({'message': 'Link not found'})
-        
+
 
 @app.route('/<short_code>')
 def redirect_to_long_link(short_code):
