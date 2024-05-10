@@ -55,7 +55,7 @@
                 {% endif %}
             </div>
 
-            <p>You can create 05 more links. Register Now to have Unlimited usage</p>
+            <p>You can create {{ user_links }} more links. Register Now to have Unlimited usage</p>
         </div>
 
         <div class="w-[85%] p-5 m-auto mt-8">
@@ -79,8 +79,8 @@
                         <td>
                             <form action="{{ url_for('delete_link', link_id=link.id) }}" method="post">
                                 <button type="button" class="text-red-500 hover:text-red-700"
-                                    onclick="deleteLink({{ link.id }})">DELETE
-                                    <!--i class="fa-solid fa-trash"></i-->
+                                    onclick="deleteLink({{ link.id }})">
+                                    <i class="fa-solid fa-trash"></i>
                                 </button>
                             </form>
                         </td>
